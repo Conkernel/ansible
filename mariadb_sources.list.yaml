@@ -6,10 +6,78 @@
 # to save time.
 # - apt_repository install things in /etc/apt/sources_list.d/
 - hosts:
-   - nextcloud
+   - next2
   become: yes
+# Previos para instalar mariadb desde repos externos:
 
   tasks:
+# apt-transport-https
+  - name: Ansible apt install apt-transport-https
+    apt:
+      name: nginxapt-transport-https curl
+      state: present 
+
+# Curl
+  - name: Ansible apt install curl
+    apt:
+      name: curl
+      state: present  
+
+# Nos aseguramos de que /etc/apt/keyrings exista
+  - name: Creates directory keyrings
+    file:
+      path: /etc/apt/keyrings
+      state: directory
+
+# Descargamos las keirings:
+  - name: Descargamos las keirings
+    ansible.builtin.command: curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
+
+# Creamos fichero /etc/apt/sources.list.d/mariadb con su contenido:
+  - name: Creamos fichero /etc/apt/sources.list.d/mariadb
+    ansible.builtin.blockinfile:
+      path: /var/www/html/index.html
+      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      block: |
+        # MariaDB 11.1 repository list - created 2023-10-01 21:06 UTC
+        # https://mariadb.org/download/
+        X-Repolib-Name: MariaDB
+        Types: deb
+        # deb.mariadb.org is a dynamic mirror if your preferred mirror goes offline. See https://mariadb.org/mirrorbits/ for details.
+        # URIs: https://deb.mariadb.org/11.1/ubuntu
+        URIs: https://mirrors.up.pt/pub/mariadb/repo/11.1/ubuntu
+        Suites: kinetic
+        Components: main main/debug
+        Signed-By: /etc/apt/keyrings/mariadb-keyring.pgp
+
+# Instalamos Mariabd-server
+  - name: Update repositories cache and install "mariadb-server" package
+    ansible.builtin.apt:
+      name: mariadb-server
+      update_cache: yes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Creamos 
   - name: Add mariadb-server jammy main
     apt_repository:
        repo: deb [arch=amd64,arm64] https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/ubuntu jammy main
