@@ -2,6 +2,6 @@
 
 Seguimos el libro con título Ansible Playboook Essentials,
 
-y usamos ejercicios del libro Practical Ansible, con ejercicios
+y usamos ejercicios del libro Practical Ansible, con ejercicios de
 
-de https://github.com/PacktPublishing/Practical-Ansible-Second-Edition/tree/main/Chapter%204
+[https://github.com/PacktPublishing/Practical-Ansible-Second-Edition/tree/main/Chapter%204](https://github.com/PacktPublishing/Practical-Ansible-Second-Edition/tree/main)https://github.com/PacktPublishing/Practical-Ansible-Second-Edition/tree/main
