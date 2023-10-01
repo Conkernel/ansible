@@ -1,0 +1,32 @@
+---
+# Add the repositories needed to install an mariadb
+#
+# Note
+# - as we're doing multiple steps we turn update_cache off until the end
+# to save time.
+# - apt_repository install things in /etc/apt/sources_list.d/
+- hosts:
+   - nextcloud
+  become: yes
+
+  tasks:
+  - name: Add mariadb-server jammy main
+    apt_repository:
+       repo: deb [arch=amd64,arm64] https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/ubuntu jammy main
+       state: present
+       update_cache: no
+  - name: Add mariadb-server jammy main/debug
+    apt_repository:
+       repo: deb [arch=amd64,arm64] https://dlm.mariadb.com/repo/mariadb-server/10.11/repo/ubuntu jammy main/debug
+       state: present
+       update_cache: no
+  - name: Add maxscale jammy main    
+    apt_repository:
+       repo: deb [arch=amd64,arm64] https://dlm.mariadb.com/repo/maxscale/latest/apt jammy main
+       state: present
+       update_cache: no
+  - name: Add Tools jammy main
+    apt_repository:
+       repo: deb [arch=amd64] http://downloads.mariadb.com/Tools/ubuntu jammy main
+       state: present
+       update_cache: yes     
