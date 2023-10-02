@@ -1,10 +1,9 @@
 ---
-# Add the repositories needed to install an mariadb
-#
-# Note
-# - as we're doing multiple steps we turn update_cache off until the end
-# to save time.
-# - apt_repository install things in /etc/apt/sources_list.d/
+### Se instala Mariadb ###
+
+
+
+
 - hosts:
    - next2
   become: yes
