@@ -14,7 +14,7 @@
 # apt-transport-https
   - name: Ansible apt install apt-transport-https
     apt:
-      name: apt-transport-https curl
+      name: apt-transport-https
       state: present 
 
 # Curl
@@ -33,11 +33,12 @@
   - name: Descargamos las keirings
     ansible.builtin.command: curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
 
-# Creamos fichero /etc/apt/sources.list.d/mariadb con su contenido:
-  - name: Creamos fichero /etc/apt/sources.list.d/mariadb
+# Creamos fichero /etc/apt/sources.list.d/mariadb.sources con su contenido:
+  - name: Creamos fichero /etc/apt/sources.list.d/mariadb.sources
     ansible.builtin.blockinfile:
-      path: /var/www/html/index.html
-      marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      path: /etc/apt/sources.list.d/mariadb.sources
+      create: True
+      marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
       block: |
         # MariaDB 11.1 repository list - created 2023-10-01 21:06 UTC
         # https://mariadb.org/download/
