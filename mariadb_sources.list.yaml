@@ -1,57 +1,75 @@
 ---
-### Se instala Mariadb ###
-
-
-
-
 - hosts:
    - next2
   become: yes
-# Previos para instalar mariadb desde repos externos:
+
 
   tasks:
-    - name: "apt-get update"
-      apt:
-        update_cache: yes
 
-    - name: Upgrade all packages to the latest version
-      apt:
-        name: "*"
-        state: latest
+# Miramos el nivel de arranque de systemd
 
-    - name: Remove dependencies
-      apt:
-        autoremove: yes
+  - name: "Get current systemd default"
+    command: "systemctl get-default"
+    changed_when: false
+    register: systemdefault
 
-    - name: Autoclean apt database
-      apt:
-        autoclean: yes
+  - name: "Set default to multi-user target"
+    command: "systemctl set-default multi-user.target"
+    when: "'multiuser' not in systemdefault.stdout"
 
+
+
+# Actualizamos y limpiamos la bd de apt
+
+  - name: "apt-get update"
+    apt:
+      update_cache: yes
+
+  - name: Upgrade all packages to the latest version
+    apt:
+      name: "*"
+      state: latest
+
+  - name: Remove dependencies
+    apt:
+      autoremove: yes
+
+  - name: Autoclean apt database
+    apt:
+      autoclean: yes
+
+
+# Previos para instalar mariadb desde repos externos:
 
 
 # apt-transport-https
+
   - name: Ansible apt install apt-transport-https
     apt:
       name: apt-transport-https
       state: present 
 
 # Curl
+
   - name: Ansible apt install curl
     apt:
       name: curl
       state: present  
 
 # Nos aseguramos de que /etc/apt/keyrings exista
+
   - name: Creates directory keyrings
     file:
       path: /etc/apt/keyrings
       state: directory
 
 # Descargamos las keirings:
+
   - name: Descargamos las keirings
     ansible.builtin.command: curl -o /etc/apt/keyrings/mariadb-keyring.pgp 'https://mariadb.org/mariadb_release_signing_key.pgp'
 
 # Creamos fichero /etc/apt/sources.list.d/mariadb.sources con su contenido:
+
   - name: Creamos fichero /etc/apt/sources.list.d/mariadb.sources
     ansible.builtin.blockinfile:
       path: /etc/apt/sources.list.d/mariadb.sources
@@ -71,9 +89,64 @@
 
 
 # Instalamos Mariabd-server
+
   - name: Update repositories cache and install "mariadb-server" package
     ansible.builtin.apt:
       name: mariadb-server
       update_cache: yes
 
 
+# Instalamos resto de paquetería necesaria:
+
+  - name: Instalamos paquetería necesaria
+    apt:
+      pkg:
+      - php-fpm
+      - php-gd
+      - php-curl
+      - php-xml
+      - php-zip
+      - php-intl
+      - php-mbstring
+      - php-bz2
+      - php-ldap
+      - php-apcu
+      - php-bcmath
+      - php-gmp
+      - php-imagick
+      - php-igbinary
+      - php-mysql
+      - php-redis
+      - php-smbclient
+      - php-cli
+      - php-common
+      - php-opcache
+      - php-readline
+      - php-imap
+      - php-snmp
+      - php-ctype
+      - php-dom
+      - php-fileinfo
+      - php-json
+      - php-posix
+      - php-xml
+      - php-ftp
+      - php-exif
+      - php-memcached
+      - vim
+      - git
+      - cron
+      - dialog
+      - inetutils-ping
+      - certbot
+      - cifs-utils
+      - ffmpeg
+      - inetutils-ping
+      - python3-certbot-apache
+      - wget
+      - apache2
+      - redis-server
+      - libapache2-mod-php
+      - php-common
+      - imagemagick
+  
