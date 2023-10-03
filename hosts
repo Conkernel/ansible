@@ -4,6 +4,9 @@ next:
     next2:
       ansible_become: yes
       ansible_user: ansible
+      ansible_become_pass: oloco
+      ansible_ssh_pass: oloco
+      ansible_sudo_pass: oloco
 
 nextcloud:
   hosts:
