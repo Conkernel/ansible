@@ -1,0 +1,16 @@
+---
+next:
+  hosts:
+    next2:
+      ansible_become: yes
+      ansible_user: ansible
+
+nextcloud:
+  hosts:
+    nextcloud.casa.lan:
+windows:
+  hosts:
+    win10.casa.lan:
+    mama.casa.lan:
+    
+
